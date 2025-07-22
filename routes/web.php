@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
+
+// 管理者だけがアクセスする投稿関連（認証必須）
+Route::middleware('auth')->group(function () {
+    Route::resource('posts', PostsController::class)->except(['index', 'show']);
 });
+
+// 一般ユーザー向けの投稿閲覧
+Route::get('/', [PostsController::class, 'index'])->name('posts.index');
+Route::get('/posts/{slug}', [PostsController::class, 'show'])->name('posts.show');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
