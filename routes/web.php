@@ -15,19 +15,25 @@ use App\Http\Controllers\PostsController;
 |
 */
 
-
-// 管理者だけがアクセスする投稿関連（認証必須）
+// 認証が必要な投稿操作（投稿CRUD系）
 Route::middleware('auth')->group(function () {
-    Route::resource('posts', PostsController::class)->except(['index', 'show']);
+    Route::resource('posts', PostsController::class)->parameters([
+        'posts' => 'slug'
+    ])->names([
+        'index' => 'posts.index',
+        'create' => 'posts.create',
+        'store' => 'posts.store',
+        'show' => 'posts.show',
+        'edit' => 'posts.edit',
+        'update' => 'posts.update',
+        'destroy' => 'posts.destroy',
+    ]);
 });
 
-// 🏠 トップページ（投稿一覧）
+// 一般公開：投稿一覧（トップページ）
 Route::get('/', [PostsController::class, 'index'])->name('home');
 
-// 🛠️ 投稿作成・編集・削除など（IDを使う）
-Route::resource('posts', PostsController::class)->except(['show']);
-
-// 🔍 投稿の詳細表示（slugを使う）
+// 一般公開：投稿詳細（slugで表示）
 Route::get('/posts/{post:slug}', [PostsController::class, 'show'])->name('posts.show');
 
 

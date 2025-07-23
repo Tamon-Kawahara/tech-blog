@@ -121,9 +121,11 @@ class PostsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy($slug)
     {
+        $post = Post::where('slug', $slug)->firstOrFail(); // ← null対策に firstOrFail
         $post->delete();
+
         return redirect()->route('posts.index')->with('success', '記事を削除しました！');
     }
 }

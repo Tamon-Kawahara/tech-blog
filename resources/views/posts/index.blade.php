@@ -4,6 +4,10 @@
 
 @section('content')
     <h1>記事一覧</h1>
+    @if (session('success'))
+        <p style="color: green;">{{ session('success') }}</p>
+    @endif
+
 
     {{-- 投稿一覧をループ --}}
     @foreach ($posts as $post)
@@ -33,6 +37,14 @@
                     <p>
                         <a href="{{ route('posts.edit', $post->slug) }}">[ 編集する ]</a>
                     </p>
+
+                    <!-- 編集ボタンの横などに -->
+                    <form action="{{ route('posts.destroy', $post->slug) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('本当に削除しますか？')">削除</button>
+                    </form>
+
                 @endauth
 
             </article>
