@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // 一般公開：投稿一覧（トップページ）
-Route::get('/', [PostsController::class, 'index'])->name('home');
+Route::get('/', [PostsController::class, 'index'])->name('posts.index');
 
 // 一般公開：投稿詳細（slugで表示）
 Route::get('/posts/{post:slug}', [PostsController::class, 'show'])->name('posts.show');

@@ -8,6 +8,29 @@
         <p style="color: green;">{{ session('success') }}</p>
     @endif
 
+    {{-- 検索フォーム --}}
+    <form method="GET" action="{{ route('posts.index') }}">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="検索ワードを入力">
+        <button type="submit">検索</button>
+    </form>
+
+    @if (request('search'))
+        <p>検索結果：「{{ request('search') }}」</p>
+    @endif
+
+    @if ($posts->isEmpty())
+        @if (request('search'))
+            <p>「{{ request('search') }}」に一致する投稿は見つかりませんでした。</p>
+        @else
+            <p>現在、公開されている投稿はありません。</p>
+        @endif
+    @else
+        {{-- 投稿一覧のループ --}}
+        @foreach ($posts as $post)
+            {{-- 各投稿の表示 --}}
+        @endforeach
+    @endif
+
 
     {{-- 投稿一覧をループ --}}
     @foreach ($posts as $post)

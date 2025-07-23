@@ -14,14 +14,23 @@ class PostsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::where('is_published', true)
-            ->orderByDesc('published_at')
-            ->get();
+        $query = Post::query()->where('is_published', true);
+
+        if ($request->filled('search')) {
+            $keyword = $request->input('search');
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', "%{$keyword}%")
+                    ->orWhere('body', 'like', "%{$keyword}%");
+            });
+        }
+
+        $posts = $query->orderByDesc('published_at')->get();
 
         return view('posts.index', compact('posts'));
     }
+
 
     /**
      * Show the form for creating a new resource.
