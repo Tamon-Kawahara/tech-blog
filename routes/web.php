@@ -21,9 +21,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts', PostsController::class)->except(['index', 'show']);
 });
 
-// 一般ユーザー向けの投稿閲覧
-Route::get('/', [PostsController::class, 'index'])->name('posts.index');
-Route::get('/posts/{slug}', [PostsController::class, 'show'])->name('posts.show');
+// 🏠 トップページ（投稿一覧）
+Route::get('/', [PostsController::class, 'index'])->name('home');
+
+// 🛠️ 投稿作成・編集・削除など（IDを使う）
+Route::resource('posts', PostsController::class)->except(['show']);
+
+// 🔍 投稿の詳細表示（slugを使う）
+Route::get('/posts/{post:slug}', [PostsController::class, 'show'])->name('posts.show');
+
 
 
 Route::get('/dashboard', function () {
@@ -36,4 +42,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

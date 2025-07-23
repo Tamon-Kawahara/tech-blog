@@ -1,48 +1,46 @@
 @extends('layouts.app')
 
-@section('title', '投稿編集')
+@section('title', '投稿を編集')
 
 @section('content')
-    <h1>投稿編集</h1>
+    <h1>投稿を編集</h1>
 
-    <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
+    {{-- エラーメッセージ --}}
+    @if ($errors->any())
+        <div>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    {{-- 編集フォーム --}}
+    <form action="{{ route('posts.update', $post->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div>
-            <label for="title">タイトル</label>
-            <input type="text" name="title" id="title" value="{{ old('title', $post->title) }}">
+            <label>タイトル</label>
+            <input type="text" name="title" value="{{ old('title', $post->title) }}" required>
         </div>
 
         <div>
-            <label for="body">本文</label>
-            <textarea name="body" id="body" rows="10">{{ old('body', $post->body) }}</textarea>
+            <label>本文</label>
+            <textarea name="body" rows="5" required>{{ old('body', $post->body) }}</textarea>
         </div>
 
         <div>
-            <label for="category_id">カテゴリ</label>
-            <select name="category_id" id="category_id">
-                <option value="">-- 未選択 --</option>
-                {{-- 後でカテゴリ選択肢を渡す前提 --}}
+            <label>カテゴリ</label>
+            <select name="category_id">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}"
+                        {{ $category->id == old('category_id', $post->category_id) ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
             </select>
-        </div>
-
-        <div>
-            <label for="eyecatch">アイキャッチ画像</label>
-            <input type="file" name="eyecatch" id="eyecatch">
-            @if ($post->eyecatch)
-                <div>
-                    <p>現在の画像：</p>
-                    <img src="{{ asset('storage/' . $post->eyecatch) }}" alt="アイキャッチ" width="300">
-                </div>
-            @endif
-        </div>
-
-        <div>
-            <label>
-                <input type="checkbox" name="is_published" {{ $post->is_published ? 'checked' : '' }}>
-                公開する
-            </label>
         </div>
 
         <button type="submit">更新する</button>

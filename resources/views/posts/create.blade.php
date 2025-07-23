@@ -30,9 +30,11 @@
 
         <div>
             <label for="category_id">カテゴリ</label>
-            <select name="category_id" id="category_id">
+            <select name="category_id">
                 <option value="">-- 未選択 --</option>
-                {{-- 仮で何も出ないけど、あとでカテゴリ追加予定 --}}
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
             </select>
         </div>
 

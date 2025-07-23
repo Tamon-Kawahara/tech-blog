@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -26,7 +27,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -34,17 +36,18 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $$validated = $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
             'category_id' => 'nullable|exists:categories,id',
             'eyecatch' => 'nullable|image|max:2048',
         ]);
 
-        $slug = Str::slug($validated['title']);
+        $slug = \Illuminate\Support\Str::slug($validated['title']);
         $eyecatchPath = $request->file('eyecatch')?->store('eyecatches', 'public');
 
-        Post::create([
+        // 🔽 Post::create() の戻り値を確認するように変更！
+        $post = Post::create([
             'user_id' => auth()->id(),
             'title' => $validated['title'],
             'slug' => $slug,
@@ -58,21 +61,25 @@ class PostsController extends Controller
         return redirect()->route('posts.index')->with('success', '記事を投稿しました！');
     }
 
+
     /**
      * Display the specified resource.
      */
-    public function show($slug)
+    public function show(Post $post)
     {
-        $post = Post::where('slug', $slug)->where('is_published', true)->firstOrFail();
+        // 公開済みでない場合は404
+        abort_unless($post->is_published, 404);
 
         return view('posts.show', compact('post'));
     }
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', compact('post'));
+        $categories = Category::all();
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     /**
