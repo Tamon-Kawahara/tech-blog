@@ -15,6 +15,17 @@
             {!! nl2br(e($post->body)) !!}
         </div>
 
+        {{-- 🔽カテゴリの表示 --}}
+        @if ($post->category)
+            <div style="margin-top: 1em;">
+                <strong>カテゴリ:</strong>
+                <a href="{{ route('categories.show', $post->category->slug) }}">
+                    {{ $post->category->name }}
+                </a>
+            </div>
+        @endif
+
+
         {{-- 🔽タグの表示 --}}
         @if ($post->tags->isNotEmpty())
             <div style="margin-top: 1em;">

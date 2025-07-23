@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,9 @@ Route::get('/', [PostsController::class, 'index'])->name('home');
 Route::get('/posts/{post:slug}', [PostsController::class, 'show'])->name('posts.show');
 
 Route::get('/tags/{slug}', [\App\Http\Controllers\TagController::class, 'show'])->name('tags.show');
+
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
 
 
 Route::get('/dashboard', function () {

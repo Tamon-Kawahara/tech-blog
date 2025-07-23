@@ -24,6 +24,15 @@
                 {{-- 投稿日表示（null安全に format） --}}
                 <p>投稿日: {{ optional($post->published_at)->format('Y/m/d') }}</p>
 
+                {{-- カテゴリ表示 --}}
+                @if ($post->category)
+                    <p>カテゴリ:
+                        <a href="{{ route('categories.show', $post->category->slug) }}">
+                            {{ $post->category->name }}
+                        </a>
+                    </p>
+                @endif
+
                 {{-- アイキャッチ画像がある場合のみ表示 --}}
                 @if ($post->eyecatch)
                     <img src="{{ asset('storage/' . $post->eyecatch) }}" alt="アイキャッチ画像" width="300">
