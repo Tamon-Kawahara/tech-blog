@@ -38,6 +38,21 @@
             </select>
         </div>
 
+        {{-- タグ選択 --}}
+        <div>
+            <label>タグ</label>
+            <div>
+                @foreach ($tags as $tag)
+                    <label>
+                        <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
+                            @if (isset($post) && $post->tags->contains($tag->id)) checked @endif>
+                        {{ $tag->name }}
+                    </label>
+                @endforeach
+            </div>
+        </div>
+
+
         <div>
             <label for="eyecatch">アイキャッチ画像</label>
             <input type="file" name="eyecatch" id="eyecatch">
