@@ -43,10 +43,15 @@ class PostsController extends Controller
             'eyecatch' => 'nullable|image|max:2048',
         ]);
 
+        // 🔽 slugを生成し、日本語対応として空だったらランダム文字列にする
         $slug = \Illuminate\Support\Str::slug($validated['title']);
+        if (empty($slug)) {
+            $slug = \Illuminate\Support\Str::random(8); // ★← ここで対応！
+        }
+
         $eyecatchPath = $request->file('eyecatch')?->store('eyecatches', 'public');
 
-        // 🔽 Post::create() の戻り値を確認するように変更！
+        // 🔽 slugは上で生成した変数を使うように変更！
         $post = Post::create([
             'user_id' => auth()->id(),
             'title' => $validated['title'],
@@ -95,6 +100,9 @@ class PostsController extends Controller
         ]);
 
         $slug = Str::slug($validated['title']);
+        if (empty($slug)) {
+            $slug = Str::random(8);
+        }
         $eyecatchPath = $request->file('eyecatch')?->store('eyecatches', 'public');
 
         $post->update([

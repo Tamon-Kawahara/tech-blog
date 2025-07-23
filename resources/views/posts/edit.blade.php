@@ -17,7 +17,7 @@
     @endif
 
     {{-- 編集フォーム --}}
-    <form action="{{ route('posts.update', $post->id) }}" method="POST">
+    <form action="{{ route('posts.update', $post->slug) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -41,6 +41,14 @@
                     </option>
                 @endforeach
             </select>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="is_published" value="1"
+                    {{ old('is_published', $post->is_published) ? 'checked' : '' }}>
+                公開する
+            </label>
         </div>
 
         <button type="submit">更新する</button>

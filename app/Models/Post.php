@@ -30,14 +30,4 @@ class Post extends Model
     {
         return 'slug';
     }
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($post) {
-            if (empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
-            }
-        });
-    }
 }
