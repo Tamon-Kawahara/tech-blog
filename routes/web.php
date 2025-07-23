@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,17 +18,17 @@ use App\Http\Controllers\PostsController;
 
 // 認証が必要な投稿操作（投稿CRUD系）
 Route::middleware('auth')->group(function () {
-    Route::resource('posts', PostsController::class)->parameters([
-        'posts' => 'slug'
-    ])->names([
-        'index' => 'posts.index',
-        'create' => 'posts.create',
-        'store' => 'posts.store',
-        'show' => 'posts.show',
-        'edit' => 'posts.edit',
-        'update' => 'posts.update',
-        'destroy' => 'posts.destroy',
-    ]);
+    Route::resource('posts', PostsController::class)
+        ->except(['show']) // ←これでshowを除外
+        ->parameters(['posts' => 'slug'])
+        ->names([
+            'index' => 'posts.index',
+            'create' => 'posts.create',
+            'store' => 'posts.store',
+            'edit' => 'posts.edit',
+            'update' => 'posts.update',
+            'destroy' => 'posts.destroy',
+        ]);
 });
 
 // 一般公開：投稿一覧（トップページ）
@@ -36,6 +37,7 @@ Route::get('/', [PostsController::class, 'index'])->name('home');
 // 一般公開：投稿詳細（slugで表示）
 Route::get('/posts/{post:slug}', [PostsController::class, 'show'])->name('posts.show');
 
+Route::get('/tags/{slug}', [\App\Http\Controllers\TagController::class, 'show'])->name('tags.show');
 
 
 Route::get('/dashboard', function () {
