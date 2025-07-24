@@ -12,12 +12,6 @@
         <p style="color: green;">{{ session('success') }}</p>
     @endif
 
-    {{-- 検索フォーム --}}
-    <form method="GET" action="{{ route('posts.index') }}">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="検索ワードを入力">
-        <button type="submit">検索</button>
-    </form>
-
     @if (request('search'))
         <p>検索結果：「{{ request('search') }}」</p>
     @endif
