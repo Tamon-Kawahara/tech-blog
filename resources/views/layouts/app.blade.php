@@ -28,9 +28,20 @@
     @endif
 
     {{-- メインコンテンツ --}}
-    <main class="max-w-5xl mx-auto px-4 py-10">
-        @yield('content')
+    <main class="max-w-7xl mx-auto px-4 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            {{-- メインコンテンツ --}}
+            <div class="w-full lg:w-2/3">
+                @yield('content')
+            </div>
+
+            {{-- サイドバー（プロフィール表示など） --}}
+            <aside class="w-full lg:w-1/3">
+                @include('components.sidebar') {{-- まだなければ仮作成でOK --}}
+            </aside>
+        </div>
     </main>
+
 
     {{-- フッター（必要なら追加OK） --}}
 
