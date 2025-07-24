@@ -48,7 +48,7 @@
     <footer class="bg-white border-t mt-10 py-6 text-center text-sm text-gray-500">
         &copy; {{ date('Y') }} Tech Blog. All rights reserved.
     </footer>
-
+    @stack('scripts')
 </body>
 
 </html>

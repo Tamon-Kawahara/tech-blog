@@ -3,6 +3,7 @@
 @section('title', $post->title)
 
 @section('content')
+    {{-- 🔹 パンくずリスト --}}
     <nav class="text-sm text-gray-500 mb-4">
         <a href="{{ route('posts.index') }}" class="hover:underline">Home</a>
         @if ($post->category)
@@ -14,65 +15,78 @@
         <span class="mx-1">›</span>
         <span>{{ $post->title }}</span>
     </nav>
+
+    {{-- 🔹 記事本文 --}}
     <article>
-        <h1>{{ $post->title }}</h1>
+        {{-- タイトル --}}
+        <h1 class="text-3xl font-bold text-center mb-4">{{ $post->title }}</h1>
+
+        {{-- 投稿日 --}}
         @if ($post->published_at)
-            <p class="text-sm text-gray-500 mb-4">
+            <p class="text-sm text-gray-500 text-center mb-6">
                 投稿日：{{ $post->published_at->format('Y年n月j日') }}
             </p>
         @endif
 
+        {{-- アイキャッチ画像 --}}
         @if ($post->eyecatch)
-            <img src="{{ asset('storage/' . $post->eyecatch) }}" alt="アイキャッチ画像" width="500">
+            <img src="{{ asset('storage/' . $post->eyecatch) }}" alt="アイキャッチ画像"
+                class="w-full max-w-3xl mx-auto mb-8 rounded-xl shadow">
         @endif
 
-        <div class="prose max-w-none">
+        {{-- 本文 --}}
+        <div class="prose max-w-none mb-10">
             {!! $post->body !!}
         </div>
 
-        {{-- 🔽カテゴリの表示 --}}
+        {{-- カテゴリ表示 --}}
         @if ($post->category)
-            <div style="margin-top: 1em;">
-                <strong>カテゴリ:</strong>
-                <a href="{{ route('categories.show', $post->category->slug) }}">
+            <div class="mb-4">
+                <span class="text-sm text-gray-600">カテゴリ:</span>
+                <a href="{{ route('categories.show', $post->category->slug) }}"
+                    class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full hover:bg-blue-200 transition">
                     {{ $post->category->name }}
                 </a>
             </div>
         @endif
 
-
-        {{-- 🔽タグの表示 --}}
+        {{-- タグ表示 --}}
         @if ($post->tags->isNotEmpty())
-            <div style="margin-top: 1em;">
-                <strong>タグ:</strong>
+            <div class="mb-6">
+                <span class="text-sm text-gray-600">タグ:</span>
                 @foreach ($post->tags as $tag)
-                    <a href="{{ route('tags.show', $tag->slug) }}" style="margin-right: 5px;">
+                    <a href="{{ route('tags.show', $tag->slug) }}"
+                        class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full mr-2 hover:bg-gray-200 transition">
                         #{{ $tag->name }}
                     </a>
                 @endforeach
             </div>
         @endif
+
         {{-- SNSシェアボタン --}}
-        <div class="mt-8">
+        <div class="mt-10">
             <p class="text-sm text-gray-500 mb-2">この記事をシェアする</p>
-            <div class="flex space-x-4">
+            <div class="flex flex-wrap gap-3">
                 <a href="#"
-                    class="inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600">
+                    class="inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-600 transition">
                     Twitter
                 </a>
                 <a href="#"
-                    class="inline-flex items-center px-4 py-2 bg-blue-700 text-white text-sm font-semibold rounded hover:bg-blue-800">
+                    class="inline-flex items-center px-4 py-2 bg-blue-700 text-white text-sm font-semibold rounded-lg shadow hover:bg-blue-800 transition">
                     Facebook
                 </a>
-                <a href="#"
-                    class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded hover:bg-gray-700">
+                <a href="#" id="copy-button"
+                    class="inline-flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-semibold rounded-lg shadow hover:bg-gray-700 transition">
                     Copy Link
                 </a>
+                <span id="copy-message" class="ml-2 text-green-600 text-sm hidden">Copied!</span>
             </div>
         </div>
     </article>
+
+    {{-- 関連記事 --}}
     @if ($relatedPosts->isNotEmpty())
-        <section class="mt-12">
+        <section class="mt-16">
             <h2 class="text-xl font-bold mb-4">関連記事</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach ($relatedPosts as $relatedPost)
@@ -81,5 +95,28 @@
             </div>
         </section>
     @endif
-
 @endsection
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButton = document.getElementById('copy-button');
+            const copyMessage = document.getElementById('copy-message');
+
+            copyButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = window.location.href;
+
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        copyMessage.classList.remove('hidden');
+                        setTimeout(() => {
+                            copyMessage.classList.add('hidden');
+                        }, 2000); // 2秒後にメッセージを非表示
+                    })
+                    .catch(err => {
+                        alert('コピーに失敗しました: ' + err);
+                    });
+            });
+        });
+    </script>
+@endpush

@@ -1,6 +1,7 @@
 @props(['post'])
 
-<div class="bg-white shadow-md rounded-lg overflow-hidden">
+<div
+    class="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.01]">
     <img src="{{ asset('storage/' . ($post->eyecatch ?? 'placeholder.jpg')) }}" alt="アイキャッチ画像"
         class="w-full h-48 object-cover" />
     <div class="p-4">
