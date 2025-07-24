@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>{{ $category->name }} の記事一覧</h2>
+  <h1 class="text-2xl font-bold mb-6">カテゴリ：{{ $category->name }}</h1>
 
-    @foreach ($posts as $post)
-        <div>
-            <a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
-        </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @foreach ($category->posts as $post)
+      @if ($post->is_published)
+        <x-post-card :post="$post" />
+      @endif
     @endforeach
-
-    {{ $posts->links() }}
+  </div>
 @endsection
+

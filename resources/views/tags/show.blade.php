@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>タグ: {{ $tag->name }}</h1>
+  <h1 class="text-2xl font-bold mb-6">タグ：#{{ $tag->name }}</h1>
 
-    @foreach ($posts as $post)
-        <div>
-            <h2><a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a></h2>
-            <p>{{ Str::limit($post->body, 100) }}</p>
-        </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @foreach ($tag->posts as $post)
+      @if ($post->is_published)
+        <x-post-card :post="$post" />
+      @endif
     @endforeach
-
-    {{ $posts->links() }}
+  </div>
 @endsection
