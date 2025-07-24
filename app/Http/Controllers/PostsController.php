@@ -90,7 +90,15 @@ class PostsController extends Controller
         // 公開済みでない場合は404
         abort_unless($post->is_published, 404);
 
-        return view('posts.show', compact('post'));
+        // 🔽関連記事を追加（カテゴリが一致、かつ自分以外、公開済み）
+        $relatedPosts = Post::where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
+            ->where('is_published', true)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        return view('posts.show', compact('post', 'relatedPosts'));
     }
 
     /**
