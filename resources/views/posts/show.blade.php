@@ -1,5 +1,8 @@
 @extends('layouts.app')
-
+@section('og_title', $post->title)
+@section('og_description', Str::limit(strip_tags($post->body), 100))
+@section('og_url', route('posts.show', $post->slug))
+@section('og_image', $post->image_url ? asset('storage/' . $post->image_url) : asset('images/default-ogp.png'))
 @section('title', $post->title)
 
 @section('content')

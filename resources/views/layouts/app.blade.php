@@ -5,6 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Tech Blog') }}</title>
+    <!-- OGP基本 -->
+    <meta property="og:title" content="@yield('og_title', config('app.name', 'テックブログ'))" />
+    <meta property="og:description" content="@yield('og_description', 'エンジニアの技術発信ブログ')" />
+    <meta property="og:url" content="@yield('og_url', request()->fullUrl())" />
+    <meta property="og:image" content="@yield('og_image', asset('images/default-ogp.png'))" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="テックブログ" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', config('app.name', 'テックブログ'))">
+    <meta name="twitter:description" content="@yield('og_description', 'エンジニアの技術発信ブログ')">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/default-ogp.png'))">
+
 
     <!-- Google Fonts: Figtree -->
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
