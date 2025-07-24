@@ -11,8 +11,8 @@
             <img src="{{ asset('storage/' . $post->eyecatch) }}" alt="アイキャッチ画像" width="500">
         @endif
 
-        <div>
-            {!! nl2br(e($post->body)) !!}
+        <div class="prose max-w-none">
+            {!! $post->body !!}
         </div>
 
         {{-- 🔽カテゴリの表示 --}}
