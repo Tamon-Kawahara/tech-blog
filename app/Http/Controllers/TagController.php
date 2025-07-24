@@ -9,10 +9,12 @@ class TagController extends Controller
 {
     public function index()
     {
-        $tags = Tag::all(); // タグをすべて取得
+        $tags = Tag::withCount('posts')
+            ->orderByDesc('posts_count')
+            ->get();
         return view('tags.index', compact('tags'));
     }
-    
+
     public function show($slug)
     {
         $tag = Tag::where('slug', $slug)->firstOrFail();
