@@ -7,6 +7,12 @@ use App\Models\Tag;
 
 class TagController extends Controller
 {
+    public function index()
+    {
+        $tags = Tag::all(); // タグをすべて取得
+        return view('tags.index', compact('tags'));
+    }
+    
     public function show($slug)
     {
         $tag = Tag::where('slug', $slug)->firstOrFail();

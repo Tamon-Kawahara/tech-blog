@@ -38,7 +38,7 @@ Route::get('/', [PostsController::class, 'index'])->name('posts.index');
 
 // 一般公開：投稿詳細（slugで表示）
 Route::get('/posts/{post:slug}', [PostsController::class, 'show'])->name('posts.show');
-
+Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::get('/tags/{slug}', [\App\Http\Controllers\TagController::class, 'show'])->name('tags.show');
 
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
