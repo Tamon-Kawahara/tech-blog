@@ -3,6 +3,17 @@
 @section('title', $post->title)
 
 @section('content')
+    <nav class="text-sm text-gray-500 mb-4">
+        <a href="{{ route('posts.index') }}" class="hover:underline">Home</a>
+        @if ($post->category)
+            <span class="mx-1">›</span>
+            <a href="{{ route('categories.show', $post->category->slug) }}" class="hover:underline">
+                {{ $post->category->name }}
+            </a>
+        @endif
+        <span class="mx-1">›</span>
+        <span>{{ $post->title }}</span>
+    </nav>
     <article>
         <h1>{{ $post->title }}</h1>
         <p>投稿日: {{ optional($post->published_at)->format('Y/m/d') }}</p>
