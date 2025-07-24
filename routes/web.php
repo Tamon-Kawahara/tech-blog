@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,14 @@ Route::get('/tags/{slug}', [\App\Http\Controllers\TagController::class, 'show'])
 
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
+// お問い合わせフォームの表示
+Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'show'])->name('contact.show');
+Route::get('/contact/thanks', function () {
+    return view('contact.thanks');
+})->name('contact.thanks');
+
+// フォーム送信（保存処理）
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 
 
 Route::get('/dashboard', function () {
