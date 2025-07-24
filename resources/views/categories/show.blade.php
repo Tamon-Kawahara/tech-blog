@@ -1,14 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-  <h1 class="text-2xl font-bold mb-6">カテゴリ：{{ $category->name }}</h1>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    @foreach ($category->posts as $post)
-      @if ($post->is_published)
-        <x-post-card :post="$post" />
-      @endif
-    @endforeach
-  </div>
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">#{{ $category->name }} カテゴリの記事</h1>
+        <p class="text-gray-600 mb-6">全{{ $posts->count() }}件</p>
+        <div class="grid gap-6 md:grid-cols-2">
+            @foreach ($category->posts as $post)
+                @if ($post->is_published)
+                    <x-post-card :post="$post" />
+                @endif
+            @endforeach
+        </div>
+    </div>
 @endsection
-
