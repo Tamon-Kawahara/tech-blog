@@ -4,36 +4,40 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Tech Blog') }}</title>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
+    <!-- Google Fonts: Figtree -->
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
+    <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
-        @include('layouts.navigation')
+<body class="font-sans antialiased bg-gray-50 text-gray-800">
 
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
+    {{-- ナビゲーション --}}
+    @include('layouts.navigation')
 
-        <!-- Page Content -->
-        <main>
-            @yield('content')
-        </main>
-    </div>
+    {{-- ヘッダー（必要ならページタイトルを表示） --}}
+    @hasSection('header')
+        <header class="bg-white shadow">
+            <div class="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                @yield('header')
+            </div>
+        </header>
+    @endif
+
+    {{-- メインコンテンツ --}}
+    <main class="max-w-5xl mx-auto px-4 py-10">
+        @yield('content')
+    </main>
+
+    {{-- フッター（必要なら追加OK） --}}
+
+    <footer class="bg-white border-t mt-10 py-6 text-center text-sm text-gray-500">
+        &copy; {{ date('Y') }} Tech Blog. All rights reserved.
+    </footer>
+
 </body>
 
 </html>

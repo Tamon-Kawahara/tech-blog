@@ -2,6 +2,10 @@
 
 @section('title', '記事一覧')
 
+@section('header')
+    <h1 class="text-2xl font-bold text-gray-800">最新の投稿一覧</h1>
+@endsection
+
 @section('content')
     <h1>記事一覧</h1>
     @if (session('success'))
