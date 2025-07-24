@@ -16,7 +16,11 @@
     </nav>
     <article>
         <h1>{{ $post->title }}</h1>
-        <p>投稿日: {{ optional($post->published_at)->format('Y/m/d') }}</p>
+        @if ($post->published_at)
+            <p class="text-sm text-gray-500 mb-4">
+                投稿日：{{ $post->published_at->format('Y年n月j日') }}
+            </p>
+        @endif
 
         @if ($post->eyecatch)
             <img src="{{ asset('storage/' . $post->eyecatch) }}" alt="アイキャッチ画像" width="500">

@@ -35,4 +35,8 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
 }
