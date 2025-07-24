@@ -84,6 +84,9 @@
         </div>
     </article>
 
+    {{-- 著者情報 --}}
+    <x-author-box />
+
     {{-- 関連記事 --}}
     @if ($relatedPosts->isNotEmpty())
         <section class="mt-16">
